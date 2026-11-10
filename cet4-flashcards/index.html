@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="CET-4 标准词库单词卡（4500+ 词）：英美双音标、高频中文释义、例句与常用搭配、考频星级、近三年真题标记，四种基本题型与周测/月测滚动抽查。">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f6fd" id="meta-theme">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%234f6bff'/%3E%3Ctext x='32' y='43' font-size='30' font-weight='700' text-anchor='middle' fill='white' font-family='Segoe UI,Arial'%3EC4%3C/text%3E%3C/svg%3E">
+<title>CET-4 4500 单词卡 · 考频星级</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<div id="app-error" class="app-error" hidden></div>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">C4</div>
+      <div class="brand-text">
+        <h1>CET-4 标准词库单词卡</h1>
+        <p>4500+ 词 · 英美双音标 · 考频星级 · 近三年真题 · 周测/月测</p>
+      </div>
+    </div>
+    <div class="top-stats">
+      <div class="stat"><strong id="stat-mastered">0</strong><span>已掌握</span></div>
+      <div class="stat"><strong id="stat-total">0</strong><span>总词数</span></div>
+      <div class="stat"><strong id="stat-accuracy">—</strong><span>测试正确率</span></div>
+    </div>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="切换深浅色" title="切换深浅色">🌙</button>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="主导航">
+    <button class="tab is-active" id="tab-study" data-view="study" role="tab" aria-selected="true" aria-controls="view-study" type="button">📚 学习卡片</button>
+    <button class="tab" id="tab-quiz" data-view="quiz" role="tab" aria-selected="false" aria-controls="view-quiz" type="button">🎯 词汇测试</button>
+    <button class="tab" id="tab-stats" data-view="stats" role="tab" aria-selected="false" aria-controls="view-stats" type="button">📈 学习数据</button>
+  </nav>
+
+  <main class="main">
+    <!-- ============ 学习 ============ -->
+    <section id="view-study" class="view is-active" role="tabpanel" aria-labelledby="tab-study">
+      <div class="toolbar">
+        <label class="search">
+          <span aria-hidden="true">🔍</span>
+          <input id="search" type="search" placeholder="搜索单词或中文释义…" autocomplete="off" aria-label="搜索单词或中文释义">
+        </label>
+        <div class="toolbar-group">
+          <select id="filter" aria-label="按学习状态筛选">
+            <option value="all">全部单词</option>
+            <option value="unmastered">未掌握</option>
+            <option value="mastered">已掌握</option>
+            <option value="fav">已收藏</option>
+          </select>
+          <select id="letter" aria-label="按首字母筛选"><option value="all">全部字母</option></select>
+          <select id="star" aria-label="按考频星级筛选">
+            <option value="all">全部星级</option>
+            <option value="5">★★★★★ 最高频</option>
+            <option value="4">★★★★ 高频</option>
+            <option value="3">★★★ 中频</option>
+            <option value="2">★★ 较低频</option>
+            <option value="1">★ 低频</option>
+          </select>
+          <label class="filter-check" title="只显示近三年真题中出现过的单词">
+            <input id="exam-only" type="checkbox">
+            <span>近三年真题</span>
+          </label>
+          <button id="shuffle" class="btn ghost" type="button">🎲 随机</button>
+        </div>
+      </div>
+
+      <div class="study-layout">
+        <div class="card-column">
+          <div class="card" id="card" tabindex="0" role="button" aria-label="单词卡，点击或按空格翻面查看释义与例句">
+            <div class="card-inner">
+              <div class="card-face card-front">
+                <div class="card-top">
+                  <div class="pos-chips" id="pos-chips"></div>
+                  <button class="icon-btn fav-btn" id="fav-btn" type="button" aria-label="收藏单词" title="收藏">☆</button>
+                </div>
+                <div class="word" id="word">—</div>
+                <div class="word-badges" id="word-badges"></div>
+                <div class="phonetics">
+                  <div class="phonetic-row">
+                    <span class="accent-tag us">US</span>
+                    <span class="ipa" id="ipa-us">—</span>
+                    <button class="speak-btn" data-accent="us" type="button" aria-label="播放美式发音" title="美式发音">🔊</button>
+                  </div>
+                  <div class="phonetic-row">
+                    <span class="accent-tag uk">UK</span>
+                    <span class="ipa" id="ipa-uk">—</span>
+                    <button class="speak-btn" data-accent="uk" type="button" aria-label="播放英式发音" title="英式发音">🔊</button>
+                  </div>
+                </div>
+                <div class="card-hint">
+                  <span class="hint-desktop">点击卡片翻面 · 查看释义与例句</span>
+                  <span class="hint-touch">轻点翻面 · 左右滑动切换单词</span>
+                </div>
+              </div>
+              <div class="card-face card-back">
+                <div class="back-head">
+                  <div class="word-sm" id="word-back">—</div>
+                  <button class="icon-btn fav-btn" id="fav-btn-back" type="button" aria-label="收藏单词" title="收藏">☆</button>
+                </div>
+                <div class="word-badges" id="word-back-badges"></div>
+                <div class="senses" id="senses"></div>
+                <div class="block">
+                  <h3>例句</h3>
+                  <div id="examples"></div>
+                </div>
+                <div class="block" id="forms-block">
+                  <h3>词性转换</h3>
+                  <div id="forms"></div>
+                </div>
+                <div class="block" id="idioms-block">
+                  <h3>英美地道表达</h3>
+                  <div id="idioms"></div>
+                </div>
+                <div class="block" id="phrases-block">
+                  <h3>常用搭配</h3>
+                  <div id="phrases"></div>
+                </div>
+                <div class="card-hint">
+                  <span class="hint-desktop">点击卡片返回正面</span>
+                  <span class="hint-touch">轻点返回正面 · 左右滑动切换</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mark-row" role="group" aria-label="标记掌握程度">
+            <button class="btn mark unknown" data-mark="unknown" type="button">不认识</button>
+            <button class="btn mark fuzzy" data-mark="fuzzy" type="button">有点印象</button>
+            <button class="btn mark known" data-mark="known" type="button">认识</button>
+          </div>
+
+          <div class="nav-row">
+            <button class="btn ghost" id="prev" type="button">← 上一个</button>
+            <span class="position" id="position">0 / 0</span>
+            <button class="btn ghost" id="next" type="button">下一个 →</button>
+          </div>
+        </div>
+
+        <aside class="side-column">
+          <div class="panel">
+            <h2>学习进度</h2>
+            <div class="progress-line">
+              <div class="bar"><span id="bar-mastered"></span></div>
+              <div class="progress-caption"><span id="progress-caption">已掌握 0 / 0</span><span id="progress-percent">0%</span></div>
+            </div>
+            <ul class="legend">
+              <li><i class="dot known"></i>已掌握 <b id="legend-known">0</b></li>
+              <li><i class="dot fuzzy"></i>有点印象 <b id="legend-fuzzy">0</b></li>
+              <li><i class="dot unknown"></i>不认识 <b id="legend-unknown">0</b></li>
+              <li><i class="dot new"></i>未学习 <b id="legend-new">0</b></li>
+            </ul>
+            <div class="mini-stats">
+              <div><b id="side-fav">0</b><span>收藏</span></div>
+              <div><b id="side-tested">0</b><span>已测词</span></div>
+              <div><b id="side-exam">0</b><span>近三年真题</span></div>
+            </div>
+          </div>
+          <div class="panel tips">
+            <h2>快捷键</h2>
+            <ul class="keys">
+              <li><kbd>←</kbd><kbd>→</kbd>切换单词</li>
+              <li><kbd>空格</kbd>翻转卡片</li>
+              <li><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd>不认识 / 模糊 / 认识</li>
+              <li><kbd>S</kbd>美音 · <kbd>D</kbd>英音</li>
+            </ul>
+            <p class="note">发音调用浏览器语音合成（Web Speech API）。若系统未安装英式语音包，英音可能以默认英语朗读。</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ 测试 ============ -->
+    <section id="view-quiz" class="view" role="tabpanel" aria-labelledby="tab-quiz">
+      <div id="quiz-setup">
+        <h2 class="section-title">选择测试模式</h2>
+        <p class="section-sub">可同时选择多种题型；题目数量可自定义；周测/月测按近期学习记录滚动抽查，答错的单词会自动进入错题本。</p>
+
+        <div class="mode-grid" id="mode-grid">
+          <button class="mode-card is-selected" data-mode="en2cn" type="button" aria-pressed="true"><span class="mode-icon">🅰️</span><b>英译中</b><small>看单词，选释义</small></button>
+          <button class="mode-card" data-mode="cn2en" type="button" aria-pressed="false"><span class="mode-icon">🈶</span><b>中译英</b><small>看释义，选单词</small></button>
+          <button class="mode-card" data-mode="listen" type="button" aria-pressed="false"><span class="mode-icon">🎧</span><b>听音选词</b><small>听发音，选单词</small></button>
+          <button class="mode-card" data-mode="spell" type="button" aria-pressed="false"><span class="mode-icon">⌨️</span><b>拼写挑战</b><small>看释义，拼单词</small></button>
+        </div>
+
+        <div class="quiz-options">
+          <label><span id="quiz-count-label">题目数量</span>
+            <span class="count-field"><input id="quiz-count" type="number" min="1" max="2000" step="1" value="20" inputmode="numeric" aria-label="题目数量"><span id="quiz-count-unit">题</span></span>
+          </label>
+          <label>出题范围
+            <select id="quiz-scope">
+              <option value="all">全部单词</option>
+              <option value="star5">★★★★★ 最高频</option>
+              <option value="exam">近三年真题</option>
+              <option value="week">周测（近 7 天）</option>
+              <option value="month">月测（近 30 天）</option>
+              <option value="fav">已收藏</option>
+              <option value="wrong">错题本</option>
+            </select>
+          </label>
+          <button class="btn primary big" id="start-quiz" type="button">开始测试 →</button>
+        </div>
+
+        <p class="quiz-note" id="quiz-note" hidden>周测/月测从近 7/30 天学过的词中滚动抽查：不认识 60%、错题 20%、有点印象 15%、认识 5%；4★ 以上全部纳入并加考常用词组；每词至少 2 种题型（周测最多 350 词 / 700 题，月测最多 750 词 / 1500 题）。</p>
+
+        <div class="history-panel" id="quiz-history"></div>
+      </div>
+
+      <div id="quiz-run" class="quiz-run" hidden>
+        <div class="quiz-head">
+          <span class="quiz-mode" id="quiz-mode-label">英译中</span>
+          <span class="quiz-progress" id="quiz-progress">1 / 10</span>
+          <span class="quiz-score" id="quiz-score">得分 0</span>
+          <button class="btn ghost small" id="quit-quiz" type="button">退出</button>
+        </div>
+        <div class="quiz-bar"><span id="quiz-bar"></span></div>
+
+        <div class="question-card">
+          <div class="question-prompt" id="question-prompt"></div>
+          <div class="question-extra" id="question-extra"></div>
+          <div class="options" id="options"></div>
+          <form class="spell-form" id="spell-form" hidden>
+            <input id="spell-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入单词…" aria-label="输入单词">
+            <button class="btn primary" type="submit">检查</button>
+          </form>
+          <div class="spell-hints" id="spell-hints" hidden>
+            <button class="btn ghost small" id="hint-btn" type="button">提示（3）</button>
+            <span class="spell-hint-text" id="spell-hint-text"></span>
+            <span class="spell-timer" id="spell-timer" hidden></span>
+            <div class="hint-choices" id="hint-choices" hidden>
+              <button class="btn ghost small" id="hint-whole" type="button">提示整个单词（加入错题）</button>
+              <button class="btn ghost small" id="hint-odd" type="button">提示奇数位字母</button>
+            </div>
+          </div>
+          <p class="quiz-tip">
+            <span class="tip-desktop" id="quiz-tip">按 <kbd>1</kbd>–<kbd>4</kbd> 选择答案，按 <kbd>Enter</kbd> 下一题</span>
+            <span class="tip-touch" id="quiz-tip-touch">点击选项作答，答完点「下一题」继续</span>
+          </p>
+        </div>
+
+        <div class="feedback" id="feedback" hidden>
+          <div class="feedback-head" id="feedback-head"></div>
+          <div class="feedback-word" id="feedback-word"></div>
+          <div class="feedback-detail" id="feedback-detail"></div>
+          <button class="btn primary" id="next-question" type="button">下一题 →</button>
+        </div>
+      </div>
+
+      <div id="quiz-result" class="quiz-result" hidden>
+        <div class="score-ring" id="score-ring"><div><b id="result-percent">0%</b><span>正确率</span></div></div>
+        <h2 id="result-title">测试完成</h2>
+        <p id="result-sub"></p>
+        <p id="result-marks" class="result-marks" hidden></p>
+        <div class="result-stats" id="result-stats"></div>
+        <div class="wrong-list" id="wrong-list"></div>
+        <div class="result-actions">
+          <button class="btn primary" id="retry-same" type="button">再测一次</button>
+          <button class="btn" id="retry-wrong" type="button">只练错题</button>
+          <button class="btn ghost" id="back-setup" type="button">返回</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 数据 ============ -->
+    <section id="view-stats" class="view" role="tabpanel" aria-labelledby="tab-stats">
+      <h2 class="section-title">学习数据</h2>
+      <div class="stats-grid">
+        <div class="metric"><span>已掌握</span><b id="m-mastered">0</b><small id="m-mastered-sub">0%</small></div>
+        <div class="metric"><span>测试次数</span><b id="m-tests">0</b><small>累计完成</small></div>
+        <div class="metric"><span>平均正确率</span><b id="m-accuracy">—</b><small id="m-accuracy-sub">暂无数据</small></div>
+        <div class="metric"><span>收藏单词</span><b id="m-fav">0</b><small>重点复习</small></div>
+        <div class="metric"><span>近三年真题词</span><b id="m-exam">0</b><small id="m-exam-sub">2023–2025 真题</small></div>
+        <div class="metric"><span>五星高频词</span><b id="m-star5">0</b><small id="m-star5-sub">考频最高一档</small></div>
+      </div>
+      <div class="stats-columns">
+        <div class="panel"><h2>错题本</h2><div id="wrong-book" class="wrong-book"></div></div>
+        <div class="panel"><h2>最近测试</h2><div id="history-list" class="history-list"></div></div>
+      </div>
+      <div class="danger-zone">
+        <button class="btn danger" id="reset-data" type="button">清空所有学习数据</button>
+        <p>仅清除本机保存的学习进度、收藏与测试记录，不影响词库文件。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>CET-4 标准词库单词卡 · 纯前端离线可用</span>
+    <span>词库 <b id="footer-count">0</b> 词 · 考频星级 · 近三年真题标记</span>
+  </footer>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="js/data-a.js"></script>
+<script src="js/data-b.js"></script>
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "cet4-flashcards",
+  "version": "2.3.0",
+  "private": true,
+  "description": "CET-4 标准词库单词卡：4545 词、英美双音标与标准发音、考频 1–5 星、近三年真题标记、词性转换与地道表达、多选/自定义题量、周测/月测、拼写提示，纯前端自适应",
+  "scripts": {
+    "validate": "node tools/validate-data.js",
+    "check:ui": "node tools/check-ui.js",
+    "check:quiz": "node tools/check-quiz.js",
+    "test": "node tests/core.test.js",
+    "build": "node tools/build-single.js",
+    "check": "node tools/validate-data.js && node tools/check-ui.js && node tools/check-quiz.js && node tests/core.test.js && node tools/build-single.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
